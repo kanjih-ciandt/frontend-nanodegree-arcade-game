@@ -3,10 +3,10 @@
 ## Table of Contents
 
 - [Instructions](#instructions)
-- [Required Libraries and Dependencies](#requiredlibrariesanddependencies)
-- [How to Play](#howtoplay)
-- [Project contents](#projectcontents)
-- [How to Run the Project](#howtoruntheproject)
+- [Required Libraries and Dependencies](#required-libraries-and-dependencies)
+- [How to Play](#how-to-play)
+- [Project contents](#project-contents)
+- [How to Run the Project](#how-to-run-the-project)
 - [Contributing](#contributing)
 
 ## Instructions
