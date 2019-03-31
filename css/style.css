@@ -1,3 +1,9 @@
 body {
     text-align: center;
 }
+
+.logo {
+    width:10px;
+    height:10px;
+    margin:auto auto;
+}

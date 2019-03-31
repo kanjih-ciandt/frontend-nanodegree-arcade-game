@@ -1,47 +1,75 @@
-// Enemies our player must avoid
-var Enemy = function(x, y, speed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-};
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt;
-
-    // make enemies loop to left side of canvas after reaching canvas.width
-    if (this.x >= 505) {
-        this.x = 0;
+/**
+ * @description Class that define the enemy
+ * @constructor
+ * @param x - coordinate x in cartesian system
+ * @param y - coordinate y in cartesian system
+ * @param speed - speed of player
+ */
+class Enemy {
+    constructor(x, y, speed ) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.sprite = 'images/enemy-bug.png';
     }
-};
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+    _checkCollision() {
+        // check for collision between enemy and player
+        if (
+            player.y + 131 >= this.y + 90
+            && player.x + 25 <= this.x + 88
+            && player.y + 73 <= this.y + 135
+            && player.x + 76 >= this.x + 11) {
+                player.x = 202.5;
+                player.y = 383;
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+                if (allEnemies.length > 1) {
+                    allEnemies.pop();
+                }
+        }
+
+    }
+
+    update(dt) {
+        this.x += this.speed * dt;
+
+        if (this.x >= 505) {
+            this.x = 0;
+        }
+        this._checkCollision();
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+}
+
+/**
+ * @description Class that define the player
+ * @constructor
+ * @param x - coordinate x in cartesian system
+ * @param y - coordinate y in cartesian system
+ * @param speed - speed of player
+ */
 class Player {
     constructor(x, y, speed ) {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.sprite = 'images/char-boy.png';
+        this.sprite = this.getSkin();
     }
     update() {
+    }
 
+    getSkin(){
+        let character = ['images/char-boy.png',
+            'images/char-cat-girl.png',
+            'images/char-horn-girl.png',
+            'images/char-pink-girl.png',
+            'images/char-princess-girl.png'];
+
+        return character[Math.floor(Math.random()*character.length)];
     }
 
     render() {
@@ -53,6 +81,9 @@ class Player {
             player.y = 383;
         }
         if (player.y < 0 ) {
+            this.sprite = this.getSkin();
+            let enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+            allEnemies.push(enemy);
             player.y = 383;
         }
         if (player.x > 402.5) {
@@ -61,7 +92,7 @@ class Player {
         if (player.x < 2.5) {
             player.x = 2.5;
         }
-        console.log(player.x,player.y);
+
     }
 
     handleInput(keyPress) {
@@ -78,24 +109,17 @@ class Player {
             player.y += player.speed - 20;
         }
         this._checkPlayerPosition();
-
-        console.log('keyPress is: ' + keyPress);
-
     }
 
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 let allEnemies = [];
 let player = new Player(202.5, 383, 100);
-let enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+for (i = 0; i < Math.floor(Math.random()*5); i++) {
+    let enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+    allEnemies.push(enemy);
+}
 
-allEnemies.push(enemy);
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
