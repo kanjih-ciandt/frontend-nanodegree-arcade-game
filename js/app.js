@@ -40,6 +40,22 @@ class Player {
 
     }
 
+    _checkPlayerPosition() {
+        if (player.y > 383 ) {
+            player.y = 383;
+        }
+        if (player.y < 0 ) {
+            player.y = 383;
+        }
+        if (player.x > 402.5) {
+            player.x = 402.5;
+        }
+        if (player.x < 2.5) {
+            player.x = 2.5;
+        }
+        console.log(player.x,player.y);
+    }
+
     handleInput(keyPress) {
         if (keyPress === 'left') {
             player.x -= player.speed;
@@ -53,6 +69,7 @@ class Player {
         if (keyPress === 'down') {
             player.y += player.speed - 20;
         }
+        this._checkPlayerPosition();
 
         console.log('keyPress is: ' + keyPress);
 
