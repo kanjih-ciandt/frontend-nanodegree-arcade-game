@@ -16,18 +16,19 @@ class Enemy {
     _checkCollision() {
         // check for collision between enemy and player
         if (
-            player.y + 131 >= this.y + 90
-            && player.x + 25 <= this.x + 88
-            && player.y + 73 <= this.y + 135
-            && player.x + 76 >= this.x + 11) {
+            player.y  >= this.y -56
+            && player.y <= this.y + 80
+            && player.x <= this.x + 80
+            && player.x >= this.x - 79) {
                 player.x = 202.5;
                 player.y = 383;
+                console.log(`Player x: ${player.x}, y: ${player.y} `);
+                console.log(`Enemy x: ${this.x}, y: ${this.y} `);
 
                 if (allEnemies.length > 1) {
                     allEnemies.pop();
                 }
         }
-
     }
 
     update(dt) {
@@ -92,6 +93,7 @@ class Player {
         if (player.x < 2.5) {
             player.x = 2.5;
         }
+        console.log(`x: ${player.x}, y: ${player.y} `)
 
     }
 
@@ -100,13 +102,13 @@ class Player {
             player.x -= player.speed;
         }
         if (keyPress === 'up') {
-            player.y -= player.speed - 20;
+            player.y -= player.speed - 10;
         }
         if (keyPress === 'right') {
             player.x += player.speed;
         }
         if (keyPress === 'down') {
-            player.y += player.speed - 20;
+            player.y += player.speed - 10;
         }
         this._checkPlayerPosition();
     }
@@ -114,11 +116,12 @@ class Player {
 }
 
 let allEnemies = [];
-let player = new Player(202.5, 383, 100);
+let player = new Player(202.5, 383, 40);
 for (i = 0; i < Math.floor(Math.random()*5); i++) {
-    let enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+    let enemy = new Enemy(0,  Math.round(Math.random() * 184 + 50), Math.random() * 300);
     allEnemies.push(enemy);
 }
+
 
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
